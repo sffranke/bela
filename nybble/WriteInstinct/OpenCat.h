@@ -180,10 +180,10 @@ void meow(int repeat = 0, int pause = 200, int startF = 50,  int endF = 200, int
 #define hTilt_idx 1 //  head
 #define tPan_idx  2 //  tail
 
-#define rFL_idx   4   // unused - front left shoulder roll
-#define rFR_idx   5   // unused - front right shoulder roll
-#define rHR_idx   6   // unused - hind right shoulder roll
-#define rHL_idx   7   // unused - hind left shoulder roll
+#define rFL_idx   4   //  - front left shoulder roll
+#define rFR_idx   5   //  - front right shoulder roll
+#define rHR_idx   6   //  - hind right shoulder roll
+#define rHL_idx   7   //  - hind left shoulder roll
 
 #define sFL_idx   8   // Servo front left shoulder pitch
 #define sFR_idx   9   // Servo front right shoulder pitch
@@ -715,6 +715,39 @@ int8_t slope = 1;
 inline int8_t adaptiveCoefficient(byte idx, byte para) {
   return EEPROM.read(ADAPT_PARAM + idx * NUM_ADAPT_PARAM + para);
 }
+
+// Steffen
+float adjust(byte i) {
+  float rollAdj, pitchAdj, retval;
+  if (i == 1 || i > 3)  {//check idx = 1
+    bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
+    //bool frontQ = i % 4 < 2 ? true : false;
+    //bool upperQ = i / 4 < 3 ? true : false;
+    float leftRightFactor = 1;
+    if ((leftQ && RollPitchDeviation[0]*slope  > 0 )
+        || ( !leftQ && RollPitchDeviation[0]*slope  < 0))
+      leftRightFactor = LEFT_RIGHT_FACTOR;
+    rollAdj = fabs(RollPitchDeviation[0]) * adaptiveCoefficient(i, 0) * leftRightFactor;
+
+  }else{
+	if (i>3){
+    		rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+	}else{
+		rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+	}
+  }
+
+  if (i == 4 || i == 5 ){
+     
+	retval = rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1]));
+  }else if(i == 6 || i == 7){
+	retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  }else{
+	retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  }
+
+  return ( retval );
+}
 /*
 float adjust(byte i) {
   float rollAdj, pitchAdj, retval;
@@ -736,9 +769,9 @@ float adjust(byte i) {
         || ( !leftQ && RollPitchDeviation[0]*slope  < 0))
       leftRightFactor = LEFT_RIGHT_FACTOR;
     if(!leftQ){
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0)/4 * +1 *leftRightFactor;
+       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) * +1 *leftRightFactor;
     }else{ 
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0)/4 * -1 * leftRightFactor;
+       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) * -1 * leftRightFactor;
     }
   }
   else {
@@ -757,33 +790,6 @@ if (i == 4 || i == 5 || i == 6 || i == 7){
   return ( retval );         
 }
 */
-/* Steffen */
-float adjust(byte i) {
-  float rollAdj, pitchAdj;
-  if (i == 1 || i > 3)  {//check idx = 1
-    bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
-    //bool frontQ = i % 4 < 2 ? true : false;
-    //bool upperQ = i / 4 < 3 ? true : false;
-    float leftRightFactor = 1;
-    if ((leftQ && RollPitchDeviation[0]*slope  > 0 )
-        || ( !leftQ && RollPitchDeviation[0]*slope  < 0))
-      leftRightFactor = LEFT_RIGHT_FACTOR;
-      if(!leftQ){
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0)/5 * -1 *leftRightFactor;
-      }else{ 
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0)/5 * +1 * leftRightFactor;
-      }
-  }
-  else
-    rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
-
-  return (
-#ifdef POSTURE_WALKING_FACTOR
-           (i > 3 ? postureOrWalkingFactor : 1) *
-#endif
-           // rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1])));
-           -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1) );
-}
 
 void saveCalib(int8_t *var) {
   for (byte i = 0; i < DOF; i++) {
@@ -791,7 +797,6 @@ void saveCalib(int8_t *var) {
     calibratedDuty0[i] = SERVOMIN + PWM_RANGE / 2 + float(middleShift(i) + var[i]) * pulsePerDegree[i] * rotationDirection(i);
   }
 }
-
 
 void calibratedPWM(byte i, float angle) {
   /*float angle = max(-SERVO_ANG_RANGE/2, min(SERVO_ANG_RANGE/2, angle));
