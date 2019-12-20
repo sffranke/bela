@@ -31,7 +31,7 @@ BM3in1 3 In 1 Lipo Batterie Monitor
 
 0,28 Zoll Mini Digital Voltmeter LED-Display, DC 2,5V-30V
 
---- Using rhasspy and node red for speech controll ---
+--- Using rhasspy and Node-RED for speech control ---
 
 Raspberry Pi 3
 
