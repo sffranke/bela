@@ -623,13 +623,13 @@ const char zero[] PROGMEM = {
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,};
 
 #if !defined(MAIN_SKETCH) || !defined(I2C_EEPROM)
-		//if it's not the main sketch to save data or there's no external EEPROM, 
-		//the list should always contain all information.
+    //if it's not the main sketch to save data or there's no external EEPROM, 
+    //the list should always contain all information.
   //const char* skillNameWithType[]={"bdI","bkI","bkLI","bkRI","crI","crLI","crRI","lyI","trI","trLI","trRI","vtI","wkI","wkLI","wkRI","balanceI","buttUpI","calibI","cd1I","cd2I","droppedI","hiI","hi2I","liftedI","peeI","pee1I","pu1I","pu2I","rc1I","rc10I","rc2I","rc3I","rc4I","rc5I","rc6I","rc7I","rc8I","rc9I","restI","sitI","sleepI","strI","zeroI",};
   const char* skillNameWithType[]={"bdI","bkI","bkLI","bkRI","crI","crLI","crRI","lyI","trI","trLI","trRI","vtI","wkI","wkLI","wkRI","balanceI","buttUpI","calibI","cd1I","cd2I","droppedI","hiI","hi2I","liftedI","peeI","pee1I","pu1I","pu2I","rc1I","rc10I","rc2I","rc3I","rc4I","rc5I","rc6I","rc7I","rc8I","rc9I","restI","sitI","sleepI","strI","zeroI",};
   const char* progmemPointer[] = {bd, bk, bkL, bkR, cr, crL, crR, ly, tr, trL, trR, vt, wk, wkL, wkR, balance, buttUp, calib, cd1, cd2, dropped, hi, hi2, lifted, pee, pee1, pu1, pu2, rc1, rc10, rc2, rc3, rc4, rc5, rc6, rc7, rc8, rc9, rest, sit, sleep, str, zero, };
-#else	//only need to know the pointers to newbilities, because the intuitions have been saved onto external EEPROM,
-	//while the newbilities on progmem are assigned to new addresses
+#else //only need to know the pointers to newbilities, because the intuitions have been saved onto external EEPROM,
+  //while the newbilities on progmem are assigned to new addresses
   const char* progmemPointer[] = {};
 #endif
 //the total byte of instincts is 4473
