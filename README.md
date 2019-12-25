@@ -25,22 +25,42 @@ IR remote kit
 
 DC-DC Step Down Modul 5A 8V-36V,  1,25V-32V
 
-HC-06 Bluetooth RF Transceiver Serial Modul
-
 BM3in1 3 In 1 Lipo Batterie Monitor
 
 0,28 Zoll Mini Digital Voltmeter LED-Display, DC 2,5V-30V
 
---- Using rhasspy and Node-RED for speech control ---
+Until here ist controlable via Remote Control 
 
-Raspberry Pi 3
+In addition there are more possibilities to control Bela:
 
-ESP32-CAM
+  --Incredible Rhasspy and Node-RED for speech control
+    https://github.com/synesthesiam/rhasspy
 
-3,3 V to 5 V Shifter
+    Raspberry Pi 3
 
-ReSpeaker Mic Array v2.0
+    3,3 V to 5 V Shifter
 
-Small USB Speaker
+    ReSpeaker Mic Array v2.0
 
+    Small USB Speaker
+
+  -- Using the also the great Web GUIi of Leukipp https://github.com/leukipp/OpenCatWeb to control the robot
+  
+  -- Using the HC-06 Bluetooth RF Transceiver Serial Modul to control the robot via Smart Phone (voice and keyboard)
+  
+  -- In Progress
+     Robot shall recognize different faces and react (great, bark, bite :) ).
+     
+     Raspberry Pi 3
+     
+     Using OpenCV
+     
+     USB-CAM
+
+     3,3 V to 5 V Shifter
+
+     ReSpeaker Mic Array v2.0
+
+     Small USB Speaker
+  
 
