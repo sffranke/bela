@@ -28,7 +28,7 @@ BM3in1 3 In 1 Lipo Batterie Monitor
 
 0,28 Zoll Mini Digital Voltmeter LED-Display, DC 2,5V-30V
 
-# Until here Bela is controlable via Remote Control 
+## Until here Bela is controlable via Remote Control 
 
 In addition there are more possibilities to control Bela:
 
