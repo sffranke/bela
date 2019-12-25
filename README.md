@@ -1,5 +1,5 @@
 # Bela
-Bela, transgender robodog.
+# Bela, transgender robodog.
 
 My version of the famous https://github.com/PetoiCamp/OpenCat:
 
@@ -29,11 +29,11 @@ BM3in1 3 In 1 Lipo Batterie Monitor
 
 0,28 Zoll Mini Digital Voltmeter LED-Display, DC 2,5V-30V
 
-Until here ist controlable via Remote Control 
+# Until here ist controlable via Remote Control 
 
 In addition there are more possibilities to control Bela:
 
-  --Incredible Rhasspy and Node-RED for speech control
+ -- Incredible Rhasspy and Node-RED for speech control
     https://github.com/synesthesiam/rhasspy
 
     Raspberry Pi 3
