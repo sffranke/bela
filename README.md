@@ -43,11 +43,12 @@ In addition there are more possibilities to control Bela:
 
     Small USB Speaker
 
-  -- Using the also the great Web GUIi of Leukipp https://github.com/leukipp/OpenCatWeb to control the robot
+  -- Using the also the great Web GUI of Leukipp https://github.com/leukipp/OpenCatWeb to control the robot
   
   -- Using the HC-06 Bluetooth RF Transceiver Serial Modul to control the robot via Smart Phone (voice and keyboard)
   
-  -- In Progress
+  -- In Progress:
+  
      Robot shall recognize different faces and react (great, bark, bite :) ).
      
      Raspberry Pi 3
@@ -57,8 +58,6 @@ In addition there are more possibilities to control Bela:
      USB-CAM
 
      3,3 V to 5 V Shifter
-
-     ReSpeaker Mic Array v2.0
 
      Small USB Speaker
   
