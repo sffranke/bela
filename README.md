@@ -60,5 +60,8 @@ In addition there are more possibilities to control Bela:
      3,3 V to 5 V Shifter
 
      Small USB Speaker
-  
+    
+ ## Changed gait/skill mode of the hind legs to get comatible to smallkat https://github.com/OperationSmallKat and spotmicro https://github.com/FlorianWilk/SpotMicroAI which use a different software but have a nice and stable mechanic.
+ 
+The leg hind right has to move exactly as the leg front left and the leg hind left has to move exactly as the leg front right. Just copy the columns of i.e. the walk gait in instinct.h, change rotation direction in Opencat.h and recalibrate the legs.
 
