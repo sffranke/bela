@@ -78,6 +78,7 @@ decode_results results;      // create instance of 'decode_results'
 String translateIR() // takes action based on IR code received
 // describing Remote IR codes.
 {
+  //Serial.println(results.value, HEX);
   switch (results.value) {
       //IR signal    key on IR remote       //abbreviation of gaits   //gait/posture names
 #ifdef DEVELOPER
@@ -111,36 +112,7 @@ String translateIR() // takes action based on IR code received
     case 0xFF4AB5: PTLF(" 8");            return (F("zero"));       //customed skill
     case 0xFF52AD: PTLF(" 9");            return (F("rc"));       //recover (turtle roll )
 #else
-/*
-    case 0xFFA25D:                        return (F("sit"));
-    case 0xFF629D:                        return (F("d"));          //shutdown all servos
-    case 0xFFE21D:                        return (F("hi"));        //greetings
 
-
-    case 0xFF22DD:                        return (F("buttUp"));     //butt up
-    case 0xFF02FD:                        return (F("balance"));    //neutral standing
-    case 0xFFC23D:                        return (F("str"));        //stretch
-
-    case 0xFFE01F:                        return (F("pee"));         //
-    case 0xFFA857:                        return (F("tr"));         //trot
-    case 0xFF906F:                        return (F("pu"));         // push up
-
-    case 0xFF6897:                        return (F("wkL"));        //walk left
-    case 0xFF9867:                        return (F("wk"));         //walk
-    case 0xFFB04F:                        return (F("wkR"));        //walk right
-
-    case 0xFF30CF:                        return (F("crL"));        //crawl left
-    case 0xFF18E7:                        return (F("cr"));         //crawl fast
-    case 0xFF7A85:                        return (F("crR"));        //crawl right
-
-    case 0xFF10EF:                        return (F("bkL"));        // back left
-    case 0xFF38C7:                        return (F("bk"));         //back
-    case 0xFF5AA5:                        return (F("bkR"));        //back right
-
-    case 0xFF42BD:                        return (F("tb"));      //turbo
-    case 0xFF4AB5:                        return (F("zero"));       //customed skill
-    case 0xFF52AD:                        return (F("rc"));       //recover (turtle roll )
-*/
     case 0xFF18E7: return (F("vt"));        //Serial.println(" FORWARD");   //stepping on spot, "mark time"
     case 0xFF10EF: return (F("sit"));       //Serial.println(" LEFT");      //sit
     case 0xFF38C7: return (F("bd"));        //Serial.println(" -OK-");      //bound
@@ -167,7 +139,7 @@ String translateIR() // takes action based on IR code received
     default: {
         Serial.println(results.value, HEX);
       }
-      return ("");                      //Serial.println("null");
+      return ("");                    //Serial.println("null");
   }// End Case
   //delay(100); // Do not get immediate repeat //no need because the main is slow
 
