@@ -94,6 +94,9 @@
 #define ULTRA_SOUND
 #define BATT A0
 
+//#define MG996R
+
+
 #ifdef ULTRA_SOUND
 #define VCC 8
 #define TRIGGER 9
@@ -199,10 +202,10 @@ void meow(int repeat = 0, int pause = 200, int startF = 50,  int endF = 200, int
 #define hTilt_PIN 0  // head
 #define tPan_PIN  8  // tail
 
-#define rFL_PIN 6     // unused - front left shoulder roll
-#define rFR_PIN 9     // unused - front right shoulder roll
-#define rHR_PIN 14    // unused - hind right shoulder roll
-#define rHL_PIN 15    // unused - hind left shoulder roll
+#define rFL_PIN 6     //  - front left shoulder roll
+#define rFR_PIN 9     //  - front right shoulder roll
+#define rHR_PIN 14    //  - hind right shoulder roll
+#define rHL_PIN 15    //  - hind left shoulder roll
 
 #define sFL_PIN 5     // front left shoulder pitch
 #define sFR_PIN 2     // front right shoulder pitch
@@ -302,9 +305,9 @@ byte right[] = {
 #define MG90D_MAX 515*PWM_FACTOR
 #define MG90D_RANGE 150
 
-#define KUDO_MIN 115*PWM_FACTOR
-#define KUDO_MAX 621*PWM_FACTOR
-#define KUDO_RANGE 220
+#define MG996R_MIN 115*PWM_FACTOR
+#define MG996R_MAX 525*PWM_FACTOR
+#define MG996R_RANGE 150
 
 // called this way, it uses the default address 0x40
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -315,14 +318,14 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // want these to be as small/large as possible without hitting the hard stop
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
-#ifndef KUDO
+#ifndef MG996R
 #define SERVOMIN  MG92B_MIN // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  MG92B_MAX // this is the 'maximum' pulse length count (out of 4096)
 #define SERVO_ANG_RANGE MG92B_RANGE
 #else
-#define SERVOMIN  KUDO_MIN // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  KUDO_MAX // this is the 'maximum' pulse length count (out of 4096)
-#define SERVO_ANG_RANGE KUDO_RANGE
+#define SERVOMIN  MG996R_MIN // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  MG996R_MAX // this is the 'maximum' pulse length count (out of 4096)
+#define SERVO_ANG_RANGE MG996R_RANGE
 #endif
 
 #define PWM_RANGE (SERVOMAX - SERVOMIN)
@@ -355,31 +358,37 @@ int8_t rotationDirections[] = {1, -1, 1, 1,
                                -1, 1, 1, -1
                               };
 */
+#ifndef MG996R
+int8_t rotationDirections[] = {1, -1, 1, 1,
+                               -1, 1, 1, 1,
+                               1, 1, 1, 1,
+                               1, -1, 1, -1
+                              };
+#else
+int8_t rotationDirections[] = {1, -1, 1, 1,
+                               1, -1, 1, -1,
+                               1, -1, 1, -1,
+                               -1, -1, 1, -1
+                              };
+#endif
+/* Li- X Version
 int8_t rotationDirections[] = {1, -1, 1, 1,
                                1, -1, 1, -1,
                                1, -1, 1, 1,
                                -1, -1, -1, 1
-                              };                             
-
-/*
-int8_t rotationDirections[] = {1, -1, 1, 1,
-                               -1, 1, 1, -1,
-                               1, -1, 1, 1,
-                               -1, -1, -1, 1
-                              };
+                              }; 
 */
-#ifndef KUDO
+#ifndef MG996R
 byte servoAngleRanges[] =  {MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE
                            };
-
 #else
-byte servoAngleRanges[] =  {KUDO_RANGE, KUDO_RANGE, KUDO_RANGE, KUDO_RANGE,
-                            KUDO_RANGE, KUDO_RANGE, KUDO_RANGE, KUDO_RANGE,
-                            KUDO_RANGE, KUDO_RANGE, KUDO_RANGE, KUDO_RANGE,
-                            KUDO_RANGE, KUDO_RANGE, KUDO_RANGE, KUDO_RANGE,
+byte servoAngleRanges[] =  {MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
+                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
+                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
+                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
                            };
 #endif
 float pulsePerDegree[DOF] = {};

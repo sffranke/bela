@@ -1,16 +1,16 @@
- /*
-    Instincts trained by Rongzhong
-    Save calibration data and constants to EEPROM
+/*
+   Instincts trained by Rongzhong
+   Save calibration data and constants to EEPROM
 
-    This sketch may also includes others' codes under MIT or other open source liscence.
-    Check those liscences in corresponding module test folders.
-    Feel free to contact us if you find any missing references.
+   This sketch may also includes others' codes under MIT or other open source liscence.
+   Check those liscences in corresponding module test folders.
+   Feel free to contact us if you find any missing references.
 
-    Rongzhong Li
-    Oct 23, 2018
-    Copyright (c) 2018 Petoi LLC.
+   Rongzhong Li
+   Oct 23, 2018
+   Copyright (c) 2018 Petoi LLC.
 
-   The MIT License
+  The MIT License
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
