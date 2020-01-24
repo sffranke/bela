@@ -22,7 +22,7 @@ IR remote kit
 
 5 V Buzzer
 
-DC-DC Step Down Modul 5A 8V-36V,  1,25V-32V
+DC-DC Step Down Modul 5A 8V-36V,  1,25V-32V (has to be substituted, causes sometimes malfunction when drawing currrent in a higher range)
 
 BM3in1 3 In 1 Lipo Batterie Monitor
 
