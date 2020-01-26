@@ -22,7 +22,7 @@ IR remote kit
 
 5 V Buzzer
 
-DC-DC Step Down Modul 5A 8V-36V,  1,25V-32V (has to be substituted, causes sometimes malfunction when drawing currrent in a higher range)
+JVSISM YPG 20A HV SBEC to bring down the Voltagt to 6 V.
 
 BM3in1 3 In 1 Lipo Batterie Monitor
 
@@ -65,4 +65,6 @@ In addition there are more possibilities to control Bela:
 To get comatible to smallkat https://github.com/OperationSmallKat and spotmicro https://github.com/FlorianWilk/SpotMicroAI which use a different software but have a nice and stable mechanic.
  
 The leg hind right has to move exactly as the leg front left and the leg hind left has to move exactly as the leg front right. Just copy the columns of i.e. the walk gait in instinct.h, change rotation direction in Opencat.h and recalibrate the legs.
+
+For now I changed the skills in Instinkt.h for wk only. All skills and most poses have to be reassigned. 
 
