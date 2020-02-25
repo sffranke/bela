@@ -22,7 +22,7 @@ IR remote kit
 
 5 V Buzzer
 
-JVSISM YPG 20A HV SBEC to bring down the Voltagt to 6 V.
+Optional: JVSISM YPG 20A HV SBEC to bring down the Voltage to 6 V.
 
 BM3in1 3 In 1 Lipo Batterie Monitor
 
