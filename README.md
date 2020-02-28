@@ -13,6 +13,8 @@ Arduino Pro Mini 16Mhz 5V
 12 x MG92b servos
 
 Lipo 2200mAh 7.4V 25C 2S
+Smaller original-like version (https://www.thingiverse.com/thing:4015171) works fine with 
+molinoRC Turnigy Nano-tech 950mAh Lipo Akku
 
 MPU6050
 
@@ -45,7 +47,7 @@ In addition there are more possibilities to control Bela:
 
   -- Using the also the great Web GUI of Leukipp https://github.com/leukipp/OpenCatWeb to control the robot
   
-  -- Using the HC-06 Bluetooth RF Transceiver Serial Modul to control the robot via Smart Phone (voice and keyboard)
+  -- Using the HC-06 Bluetooth RF Transceiver Serial Module to control the robot via Smart Phone (voice and keyboard)
   
   -- In Progress:
   
