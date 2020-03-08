@@ -70,3 +70,5 @@ The leg hind right has to move exactly as the leg front left and the leg hind le
 
 For now I changed the skills in Instinkt.h for wk only. All skills and most poses have to be reassigned. 
 
+Maybe define LL_LEG in opencat.h does the trick too... 
+
