@@ -94,7 +94,7 @@
 #define ULTRA_SOUND
 #define BATT A0
 
-//#define MG996R
+#define HV5523
 
 
 #ifdef ULTRA_SOUND
@@ -251,9 +251,13 @@ byte pins[] = {4, 3, 11, 12,
 #ifdef BIT
 //#define MPU_YAW180
 #define LL_LEG
-#define WALKING_DOF 8
+#define WALKING_DOF 12
 #endif
 #endif
+
+#define X_LEG
+#define WALKING_DOF 12
+
 //remap pins for different walking modes, pin4 ~ pin15
 byte fast[] = {
   4, 4, 7, 7,
@@ -305,9 +309,9 @@ byte right[] = {
 #define MG90D_MAX 515*PWM_FACTOR
 #define MG90D_RANGE 150
 
-#define MG996R_MIN 115*PWM_FACTOR
-#define MG996R_MAX 525*PWM_FACTOR
-#define MG996R_RANGE 150
+#define HV5523_MIN 136*PWM_FACTOR
+#define HV5523_MAX 600*PWM_FACTOR
+#define HV5523_RANGE 150
 
 // called this way, it uses the default address 0x40
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -318,14 +322,14 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // want these to be as small/large as possible without hitting the hard stop
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
-#ifndef MG996R
+#ifndef HV5523
 #define SERVOMIN  MG92B_MIN // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  MG92B_MAX // this is the 'maximum' pulse length count (out of 4096)
 #define SERVO_ANG_RANGE MG92B_RANGE
 #else
-#define SERVOMIN  MG996R_MIN // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  MG996R_MAX // this is the 'maximum' pulse length count (out of 4096)
-#define SERVO_ANG_RANGE MG996R_RANGE
+#define SERVOMIN  HV5523_MIN // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  HV5523_MAX // this is the 'maximum' pulse length count (out of 4096)
+#define SERVO_ANG_RANGE HV5523_RANGE
 #endif
 
 #define PWM_RANGE (SERVOMAX - SERVOMIN)
@@ -358,18 +362,28 @@ int8_t rotationDirections[] = {1, -1, 1, 1,
                                -1, 1, 1, -1
                               };
 */
-#ifndef MG996R
+
+#ifndef HV5523
 int8_t rotationDirections[] = {1, -1, 1, 1,
                                -1, 1, 1, 1,
-                               1, 1, 1, 1,
+                               1, 1, 1, -1,
                                1, -1, 1, -1
                               };
+
+
 #else
+int8_t rotationDirections[] = {1, -1, 1, 1,
+                               1, -1, 1, -1,
+                               1, -1, -1, +1,
+                               +1, -1, -1, +1
+                              };
+/*
 int8_t rotationDirections[] = {1, -1, 1, 1,
                                1, -1, 1, -1,
                                1, -1, 1, -1,
                                -1, -1, 1, -1
                               };
+*/
 #endif
 /* Li- X Version
 int8_t rotationDirections[] = {1, -1, 1, 1,
@@ -378,17 +392,17 @@ int8_t rotationDirections[] = {1, -1, 1, 1,
                                -1, -1, -1, 1
                               }; 
 */
-#ifndef MG996R
+#ifndef HV5523
 byte servoAngleRanges[] =  {MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
                             MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE
                            };
 #else
-byte servoAngleRanges[] =  {MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
-                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
-                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
-                            MG996R_RANGE, MG996R_RANGE, MG996R_RANGE, MG996R_RANGE,
+byte servoAngleRanges[] =  {HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
                            };
 #endif
 float pulsePerDegree[DOF] = {};
@@ -725,7 +739,7 @@ inline int8_t adaptiveCoefficient(byte idx, byte para) {
   return EEPROM.read(ADAPT_PARAM + idx * NUM_ADAPT_PARAM + para);
 }
 
-// Steffen
+/* Steffen modified balancing
 float adjust(byte i) {
   float rollAdj, pitchAdj, retval;
   if (i == 1 || i > 3)  {//check idx = 1
@@ -757,10 +771,11 @@ float adjust(byte i) {
 
   return ( retval );
 }
-/*
+*/
+
 float adjust(byte i) {
-  float rollAdj, pitchAdj, retval;
-  if (i == 1 || i > 7)  {//check idx = 1
+  float rollAdj, pitchAdj;
+  if (i == 1 || i > 3)  {//check idx = 1
     bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
     //bool frontQ = i % 4 < 2 ? true : false;
     //bool upperQ = i / 4 < 3 ? true : false;
@@ -771,34 +786,17 @@ float adjust(byte i) {
     rollAdj = fabs(RollPitchDeviation[0]) * adaptiveCoefficient(i, 0) * leftRightFactor;
 
   }
-  else if ( i > 3)  { // Steffen
-    bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
-    float leftRightFactor = 1;
-    if ((leftQ && RollPitchDeviation[0]*slope  > 0 )
-        || ( !leftQ && RollPitchDeviation[0]*slope  < 0))
-      leftRightFactor = LEFT_RIGHT_FACTOR;
-    if(!leftQ){
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) * +1 *leftRightFactor;
-    }else{ 
-       rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) * -1 * leftRightFactor;
-    }
-  }
-  else {
-    rollAdj = -1 * RollPitchDeviation[0] * adaptiveCoefficient(i, 0);
-  }
+  else
+    rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
 
-if (i > 3){
-  retval = -1 * postureOrWalkingFactor * rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  return (
+#ifdef POSTURE_WALKING_FACTOR
+           (i > 3 ? postureOrWalkingFactor : 1) *
+#endif
+           // rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1])));
+           rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1) );
 }
 
-if (i == 4 || i == 5 || i == 6 || i == 7){
-  retval = postureOrWalkingFactor * rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
-  PTL(retval);
-}
-
-  return ( retval );         
-}
-*/
 
 void saveCalib(int8_t *var) {
   for (byte i = 0; i < DOF; i++) {
