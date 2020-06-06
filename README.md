@@ -10,8 +10,10 @@ This version has 12 DOF and uses the following parts:
 
 Arduino Pro Mini 16Mhz 5V
 
-12 x MG92b servos 
+12 x MG92b servos
+
 The BIG Version using JX PDI-HV5523 HV servos and spot micro body https://www.thingiverse.com/thing:3445283
+
 HV5523 servo constants are 0°:544, 180°: 2400
 
 Lipo 2200mAh 7.4V 25C 2S
