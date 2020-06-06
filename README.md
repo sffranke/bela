@@ -10,7 +10,9 @@ This version has 12 DOF and uses the following parts:
 
 Arduino Pro Mini 16Mhz 5V
 
-12 x MG92b servos
+12 x MG92b servos 
+The BIG Version using JX PDI-HV5523 HV servos and spot micro body https://www.thingiverse.com/thing:3445283
+HV5523 servo constants are 0°:544, 180°: 2400
 
 Lipo 2200mAh 7.4V 25C 2S
 Smaller original-like version (https://www.thingiverse.com/thing:4015171) works fine with 
@@ -37,7 +39,7 @@ In addition there are more possibilities to control Bela:
  -- Incredible Rhasspy and Node-RED for speech control
     https://github.com/synesthesiam/rhasspy
 
-    Raspberry Pi 3
+    Raspberry Pi 4
 
     3,3 V to 5 V Shifter
 
@@ -53,13 +55,9 @@ In addition there are more possibilities to control Bela:
   
      Robot shall recognize different faces and react (great, bark, bite :) ).
      
-     Raspberry Pi 3
-     
      Using OpenCV
      
      USB-CAM
-
-     3,3 V to 5 V Shifter
 
      Small USB Speaker
     
