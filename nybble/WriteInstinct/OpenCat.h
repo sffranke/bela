@@ -717,13 +717,21 @@ float postureOrWalkingFactor;
 #endif
 
 #ifdef X_LEG
+/*
 int8_t adaptiveParameterArray[16][NUM_ADAPT_PARAM] = {
   { -panF, 0}, { -panF, -tiltF}, { -2 * panF, 0}, {0, 0},
   {sRF, -sPF}, { -sRF, -sPF}, { -sRF, sPF}, {sRF, sPF},
   {uRF, uPF}, {uRF, uPF}, { -uRF, uPF}, { -uRF, uPF},
   {lRF, lPF}, {lRF, lPF}, { -lRF, lPF}, { -lRF, lPF}
 };
+*/
 
+int8_t adaptiveParameterArray[16][NUM_ADAPT_PARAM] = {
+  { -panF, 0}, { -panF, -tiltF}, { -2 * panF, 0}, {0, 0},
+  {sRF, -sPF}, { sRF, -sPF}, { sRF, sPF}, {sRF, sPF},
+  {uRF, uPF}, {uRF, uPF}, { -uRF, uPF}, { -uRF, uPF},
+  {lRF, lPF}, {lRF, lPF}, { -lRF, lPF}, { -lRF, lPF}
+};
 #else // >> leg
 int8_t adaptiveParameterArray[16][NUM_ADAPT_PARAM] = {
   { -panF, 0}, { -panF / 2, -tiltF}, { -2 * panF, 0}, {0, 0},
@@ -739,7 +747,7 @@ inline int8_t adaptiveCoefficient(byte idx, byte para) {
   return EEPROM.read(ADAPT_PARAM + idx * NUM_ADAPT_PARAM + para);
 }
 
-/* Steffen modified balancing
+/* Steffen modified balancing */
 float adjust(byte i) {
   float rollAdj, pitchAdj, retval;
   if (i == 1 || i > 3)  {//check idx = 1
@@ -753,26 +761,26 @@ float adjust(byte i) {
     rollAdj = fabs(RollPitchDeviation[0]) * adaptiveCoefficient(i, 0) * leftRightFactor;
 
   }else{
-	if (i>3){
-    		rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
-	}else{
-		rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
-	}
+  	if (i>3){
+      		rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+  	}else{
+  		rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+  	}
   }
+  
+  if (i == 4 || i == 5 ){ 
 
-  if (i == 4 || i == 5 ){
-     
-	retval = rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1]));
+  retval = rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1]));
   }else if(i == 6 || i == 7){
-	retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);  // -, - --> +, +
   }else{
-	retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);  //  -, - --> +, +
   }
-
   return ( retval );
 }
-*/
 
+
+/**
 float adjust(byte i) {
   float rollAdj, pitchAdj;
   if (i == 1 || i > 3)  {//check idx = 1
@@ -796,7 +804,7 @@ float adjust(byte i) {
            // rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1])));
            rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1) );
 }
-
+**/
 
 void saveCalib(int8_t *var) {
   for (byte i = 0; i < DOF; i++) {
