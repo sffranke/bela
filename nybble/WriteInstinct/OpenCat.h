@@ -124,7 +124,7 @@ void beep(int8_t note, float duration = 10, int pause = 0, byte repeat = 1 ) {
     delay(pause);
   }
 }
-void playMelody(int start) {
+void play(int start) {
   byte len = (byte)EEPROM.read(start) / 2;
   for (int i = 0; i < len; i++)
     beep(EEPROM.read(start - 1 - i), 1000 / EEPROM.read(start - 1 - len - i), 100);
@@ -762,21 +762,25 @@ float adjust(byte i) {
 
   }else{
   	if (i>3){
-      		rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+      rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
   	}else{
   		rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
   	}
   }
   
-  if (i == 4 || i == 5 ){ 
-
-  retval = rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1]));
-  }else if(i == 6 || i == 7){
-  retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);  // -, - --> +, +
-  }else{
-  retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);  //  -, - --> +, +
+  if (i == 4 || i == 5 || i == 6 || i == 7) {
+    retval = -rollAdj/2   - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+  } else {
+    if(isbalancing){
+      //PTL("isbalancing");
+      retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+    }else{
+      //PTL("not isbalancing");
+      retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+    }
+    //PTL(retval);
   }
-  return ( retval );
+  return (retval);
 }
 
 
