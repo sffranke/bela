@@ -28,6 +28,9 @@
   SOFTWARE.
 */
 #define MAIN_SKETCH
+
+bool isbalancing;  //Steffen
+
 #include "WriteInstinct/OpenCat.h"
 
 #include <I2Cdev.h>
@@ -351,8 +354,9 @@ void setup() {
   } while (devStatus);
 
   //opening music
-#if WALKING_DOF == 8
-  playMelody(MELODY);
+#if WALKING_DOF == 12
+//  playMelody(MELODY);
+    //playMelody(1023);
 #endif
 
   //IR
@@ -425,6 +429,7 @@ void setup() {
 
 void loop() {
   float voltage = analogRead(BATT);
+  
   if (voltage <
 #ifdef NyBoard_V0_1
       -650
@@ -635,16 +640,27 @@ void loop() {
       while (Serial.available() && Serial.read()); //flush the remaining serial buffer in case the commands are parsed incorrectly
       //check above
       if (strcmp(newCmd, "") && strcmp(newCmd, lastCmd) ) {
-        //      PT("compare lastCmd ");
-        //      PT(lastCmd);
-        //      PT(" with newCmd ");
-        //      PT(token);
-        //      PT(newCmd);
-        //      PT("\n");
+        
+              PT("compare lastCmd ");
+              PT(lastCmd);
+              PT(" with newCmd ");
+              PT(token);
+              PT(newCmd);
+              PT("\n");
+        
         if (token == 'w') {}; //some words for undefined behaviors
-
+        
         if (token == 'k') { //validating key
-
+         
+          //if(newCmd == 'balance'){//Steffen
+          if(strcmp(newCmd, 'balance')) {
+            isbalancing=true; 
+            PT("isbalancing");
+            PT(" = ");
+            PT(isbalancing);
+            PT("\n");
+          }
+          
           motion.loadBySkillName(newCmd);
           char lr = newCmd[strlen(newCmd) - 1];
           offsetLR = (lr == 'L' ? 15 : (lr == 'R' ? -15 : 0));
@@ -668,8 +684,10 @@ void loop() {
             shutServos();
             token = 'd';
           }
+         
         }
         else {
+          isbalancing=false; //Steffen
           lastCmd[0] = token;
           memset(lastCmd + 1, '\0', CMD_LEN - 1);
         }
