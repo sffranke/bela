@@ -12,7 +12,7 @@ Arduino Pro Mini 16Mhz 5V
 
 12 x MG92b servos / JX PDI-HV5523
 
-The BIG Version using JX PDI-HV5523 HV servos and spot micro (long) body https://www.thingiverse.com/thing:3445283
+The BIG Version uses JX PDI-HV5523 HV servos and spot micro (long) body https://www.thingiverse.com/thing:3445283
 
 HV5523 servo constants are 0°:544, 180°: 2400
 
