@@ -1,7 +1,8 @@
 /* Main Arduino sketch for Nybble, the walking robot kitten.
    Updates should be posted on GitHub: https://github.com/PetoiCamp/OpenCat
 
-   Rongzhong Li
+   Rongzhong Lic
+   
    Aug. 27, 2018
    Copyright (c) 2018 Petoi LLC.
 
@@ -13,7 +14,8 @@
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
+  in the Softwkbalance
+  dare without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
@@ -29,14 +31,10 @@
 */
 #define MAIN_SKETCH
 
-bool isbalancing;  //Steffen
-
 #include "WriteInstinct/OpenCat.h"
 
 #include <I2Cdev.h>
 #include <MPU6050_6Axis_MotionApps20.h>
-
-
 #define PACKET_SIZE 42
 #define OVERFLOW_THRESHOLD 128
 
@@ -49,9 +47,12 @@ int8_t lag = 0;
 float ypr[3];         // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 float yprLag[HISTORY][2];
 
+ 
 MPU6050 mpu;
+
 #define OUTPUT_READABLE_YAWPITCHROLL
 // MPU control/status vars
+//bool CALLED = false;
 bool dmpReady = false;  // set true if DMP init was successful
 uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
 uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
@@ -164,7 +165,7 @@ bool checkGyro = true;
 int8_t countDown = 0;
 
 uint8_t timer = 0;
-#define SKIP 1 // bela running
+#define SKIP 2 // slow it down
 #ifdef SKIP
 byte updateFrame = 0;
 #endif
@@ -175,6 +176,16 @@ byte jointIdx = 0;
 unsigned long usedTime = 0;
 
 void checkBodyMotion()  {
+  /*
+  if (CALLED == false){
+    CALLED=true;
+    //PTL("GO");
+   }else{
+    CALLED=false;
+    //PTL("RET");
+    return(0);
+  }
+  */
   if (!dmpReady) return;
   // wait for MPU interrupt or extra packet(s) available
   //while (!mpuInterrupt && fifoCount < packetSize) ;
@@ -207,7 +218,7 @@ void checkBodyMotion()  {
       while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 
       // read a packet from FIFO
-      Wire.setClock(200000L); // make her run
+      Wire.setClock(200000L);
       mpu.getFIFOBytes(fifoBuffer, packetSize);
 
       // track FIFO count here in case there is > 1 packet available
@@ -355,8 +366,7 @@ void setup() {
 
   //opening music
 #if WALKING_DOF == 12
-//  playMelody(MELODY);
-    //playMelody(1023);
+  playMelody(MELODY);
 #endif
 
   //IR
@@ -428,11 +438,11 @@ void setup() {
 }
 
 void loop() {
-  float voltage = analogRead(BATT);
-  
+/*
+  float voltage = 650; //analogRead(BATT);  LIPO
   if (voltage <
 #ifdef NyBoard_V0_1
-      -650
+      650
 #else
       300
 #endif
@@ -444,6 +454,7 @@ void loop() {
     meow();
   }
   else {
+*/
     newCmd[0] = '\0';
     newCmdIdx = 0;
     // MPU block
@@ -640,27 +651,24 @@ void loop() {
       while (Serial.available() && Serial.read()); //flush the remaining serial buffer in case the commands are parsed incorrectly
       //check above
       if (strcmp(newCmd, "") && strcmp(newCmd, lastCmd) ) {
-        
-              PT("compare lastCmd ");
-              PT(lastCmd);
-              PT(" with newCmd ");
-              PT(token);
-              PT(newCmd);
-              PT("\n");
-        
+        //      PT("compare lastCmd ");
+        //      PT(lastCmd);
+        //      PT(" with newCmd ");
+        //      PT(token);
+        //      PT(newCmd);
+        //      PT("\n");
         if (token == 'w') {}; //some words for undefined behaviors
-        
+
         if (token == 'k') { //validating key
-         
-          //if(newCmd == 'balance'){//Steffen
-          if(strcmp(newCmd, 'balance')) {
+        
+        if(strcmp(newCmd, 'balance')) {
             isbalancing=true; 
-            PT("isbalancing");
-            PT(" = ");
-            PT(isbalancing);
-            PT("\n");
+            //PT("isbalancing");
+            //PT(" = ");
+            //PT(isbalancing);
+            //PT("\n");
           }
-          
+
           motion.loadBySkillName(newCmd);
           char lr = newCmd[strlen(newCmd) - 1];
           offsetLR = (lr == 'L' ? 15 : (lr == 'R' ? -15 : 0));
@@ -684,7 +692,6 @@ void loop() {
             shutServos();
             token = 'd';
           }
-         
         }
         else {
           isbalancing=false; //Steffen
@@ -744,5 +751,5 @@ void loop() {
         jointIdx++;
       }
     }
-  }
+ // }
 }
