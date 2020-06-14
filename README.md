@@ -1,4 +1,4 @@
-# Bela, transgender robodog.
+# Bela Robot
 
 My version of the famous https://github.com/PetoiCamp/OpenCat:
 
