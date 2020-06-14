@@ -10,9 +10,9 @@ This version has 12 DOF and uses the following parts:
 
 Arduino Pro Mini 16Mhz 5V
 
-12 x MG92b servos
+12 x MG92b servos / JX PDI-HV5523
 
-The BIG Version using JX PDI-HV5523 HV servos and spot micro body https://www.thingiverse.com/thing:3445283
+The BIG Version using JX PDI-HV5523 HV servos and spot micro (long) body https://www.thingiverse.com/thing:3445283
 
 HV5523 servo constants are 0°:544, 180°: 2400
 
@@ -22,7 +22,7 @@ molinoRC Turnigy Nano-tech 950mAh Lipo Akku
 
 MPU6050
 
-PCA9685 servo driver 
+PCA9685 servo driver X 2 for HV Servos!
 
 IR remote kit
 
