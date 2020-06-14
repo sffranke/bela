@@ -6,7 +6,7 @@
       newbility (taught by other users, saved in PROGMEM)
     A well-tuned (finalized) newbility can also be saved in external i2c EEPROM. Remember that EEPROM has very limited (1,000,000) write cycles!
 
-    SkillList (inherit from QList class) holds a mixture of instincts and newbilities.
+    SkillList (inherit from QList class) holds a mixture of infstincts and newbilities.
     It also provides a dict(key) function to return the pointer to the skill.
     Initialization information(individual skill name, address) for SkillList is stored in on-board EEPROM
 
@@ -93,8 +93,9 @@
 #define GYRO
 #define ULTRA_SOUND
 #define BATT A0
-
 #define HV5523
+
+bool isbalancing;  //Steffen
 
 
 #ifdef ULTRA_SOUND
@@ -124,9 +125,10 @@ void beep(int8_t note, float duration = 10, int pause = 0, byte repeat = 1 ) {
     delay(pause);
   }
 }
-void play(int start) {
+void playMelody(int start) {
   byte len = (byte)EEPROM.read(start) / 2;
   for (int i = 0; i < len; i++)
+  //for (int i = 0; i < 2; i++)
     beep(EEPROM.read(start - 1 - i), 1000 / EEPROM.read(start - 1 - len - i), 100);
 }
 
@@ -144,38 +146,38 @@ void meow(int repeat = 0, int pause = 200, int startF = 50,  int endF = 200, int
 
 //steffen
 /*
-#define hPan_idx  0 //  neck
-#define hTilt_idx 1 //  head
-#define tPan_idx  2 //  tail
+  #define hPan_idx  0 //  neck
+  #define hTilt_idx 1 //  head
+  #define tPan_idx  2 //  tail
 
-#define rFL_idx   4   // unused - front left shoulder roll
-#define rFR_idx   5   // unused - front right shoulder roll
-#define rHR_idx   6   // unused - hind right shoulder roll
-#define rHL_idx   7   // unused - hind left shouuld roll
+  #define rFL_idx   4   // unused - front left shoulder roll
+  #define rFR_idx   5   // unused - front right shoulder roll
+  #define rHR_idx   6   // unused - hind right shoulder roll
+  #define rHL_idx   7   // unused - hind left shouuld roll
 
-#define sFL_idx   8   // Servo 5 front left shoulder pitch
-#define sFR_idx   9   // Servo 4 front right shoulder pitch
-#define sHR_idx   10  // Servo 10 hind right shoulder pitch
-#define sHL_idx   11  // Servo 11 hind left shouuld pitch
+  #define sFL_idx   8   // Servo 5 front left shoulder pitch
+  #define sFR_idx   9   // Servo 4 front right shoulder pitch
+  #define sHR_idx   10  // Servo 10 hind right shoulder pitch
+  #define sHL_idx   11  // Servo 11 hind left shouuld pitch
 
-#define kFL_idx   12  // Servo 7 front left knee
-#define kFR_idx   13  // Servo 6 front right knee
-#define kHR_idx   14  // Servo 8 hind right knee
-#define kHL_idx   15  // Servo 9  hind left kneec
+  #define kFL_idx   12  // Servo 7 front left knee
+  #define kFR_idx   13  // Servo 6 front right knee
+  #define kHR_idx   14  // Servo 8 hind right knee
+  #define kHL_idx   15  // Servo 9  hind left kneec
 
-#define hPan_PIN 13 // neck
-#define hTilt_PIN 3 // head
-#define tPan_PIN 12 // tail
+  #define hPan_PIN 13 // neck
+  #define hTilt_PIN 3 // head
+  #define tPan_PIN 12 // tail
 
-#define sFL_PIN 5     // front left shoulder pitch
-#define sFR_PIN 4     // front right shoulder pitch
-#define sHR_PIN 10    // hind right shoulder pitch
-#define sHL_PIN 11    // hind left shouuld pitch
+  #define sFL_PIN 5     // front left shoulder pitch
+  #define sFR_PIN 4     // front right shoulder pitch
+  #define sHR_PIN 10    // hind right shoulder pitch
+  #define sHL_PIN 11    // hind left shouuld pitch
 
-#define kFL_PIN 7     // front left knee
-#define kFR_PIN 6     // front right knee
-#define kHR_PIN 8     // hind right knee
-#define kHL_PIN 9     // hind left knee
+  #define kFL_PIN 7     // front left knee
+  #define kFR_PIN 6     // front right knee
+  #define kHR_PIN 8     // hind right knee
+  #define kHL_PIN 9     // hind left knee
 */
 ///Steffen
 //Steffen
@@ -220,7 +222,7 @@ void meow(int repeat = 0, int pause = 200, int startF = 50,  int endF = 200, int
 
 #ifdef NyBoard_V0_1
 /* Steffen
-byte pins[] = {7, 0, 8, 15,
+  byte pins[] = {7, 0, 8, 15,
                6, 1, 14, 9,
                5, 2, 13, 10,
                4, 3, 12, 11
@@ -242,8 +244,8 @@ byte pins[] = {4, 3, 11, 12,
 #endif
 
 #ifdef NYBBLE
-#define HEAD
-#define TAIL
+//#define HEAD
+//#define TAIL
 #define X_LEG
 #define WALKING_DOF 12
 
@@ -254,10 +256,6 @@ byte pins[] = {4, 3, 11, 12,
 #define WALKING_DOF 12
 #endif
 #endif
-
-#define X_LEG
-#define WALKING_DOF 12
-
 //remap pins for different walking modes, pin4 ~ pin15
 byte fast[] = {
   4, 4, 7, 7,
@@ -301,13 +299,17 @@ byte right[] = {
 //servo constants
 #define DOF 16
 #define PWM_FACTOR 4
-#define MG92B_MIN 170*PWM_FACTOR
-#define MG92B_MAX 550*PWM_FACTOR
-#define MG92B_RANGE 150
+#define HV5523_MIN 170*PWM_FACTOR
+#define HV5523_MAX 550*PWM_FACTOR
+#define HV5523_RANGE 150
 
 #define MG90D_MIN 158*PWM_FACTOR //so mg92b and mg90 are not centered at the same signal
 #define MG90D_MAX 515*PWM_FACTOR
 #define MG90D_RANGE 150
+
+#define MG996R_MIN 115*PWM_FACTOR
+#define MG996R_MAX 525*PWM_FACTOR
+#define MG996R_RANGE 150
 
 #define HV5523_MIN 136*PWM_FACTOR
 #define HV5523_MAX 600*PWM_FACTOR
@@ -323,13 +325,13 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
 #ifndef HV5523
-#define SERVOMIN  MG92B_MIN // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  MG92B_MAX // this is the 'maximum' pulse length count (out of 4096)
-#define SERVO_ANG_RANGE MG92B_RANGE
-#else
 #define SERVOMIN  HV5523_MIN // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  HV5523_MAX // this is the 'maximum' pulse length count (out of 4096)
 #define SERVO_ANG_RANGE HV5523_RANGE
+#else
+#define SERVOMIN  MG996R_MIN // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  MG996R_MAX // this is the 'maximum' pulse length count (out of 4096)
+#define SERVO_ANG_RANGE MG996R_RANGE
 #endif
 
 #define PWM_RANGE (SERVOMAX - SERVOMIN)
@@ -356,47 +358,37 @@ int8_t middleShifts[] = {0, 15, 0, 0,
                          0, 0, 0, 0
                         };
 /*
-int8_t rotationDirections[] = {1, -1, 1, 1,
+  int8_t rotationDirections[] = {1, -1, 1, 1,
                                1, -1, 1, -1,
                                1, -1, -1, 1,
                                -1, 1, 1, -1
                               };
 */
-
 #ifndef HV5523
-int8_t rotationDirections[] = {1, -1, 1, 1,
+int8_t rotationDirections[] = {1, -1, 1, -1,
                                -1, 1, 1, 1,
-                               1, 1, 1, -1,
-                               1, -1, 1, -1
+                               -1, -1, -1, -1,
+                               1, -1, 1, 1
                               };
-
-
 #else
 int8_t rotationDirections[] = {1, -1, 1, 1,
                                1, -1, 1, -1,
                                1, -1, -1, +1,
                                +1, -1, -1, +1
                               };
-/*
-int8_t rotationDirections[] = {1, -1, 1, 1,
-                               1, -1, 1, -1,
-                               1, -1, 1, -1,
-                               -1, -1, 1, -1
-                              };
-*/
 #endif
 /* Li- X Version
-int8_t rotationDirections[] = {1, -1, 1, 1,
+  int8_t rotationDirections[] = {1, -1, 1, 1,
                                1, -1, 1, -1,
                                1, -1, 1, 1,
                                -1, -1, -1, 1
-                              }; 
+                              };
 */
-#ifndef HV5523
-byte servoAngleRanges[] =  {MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
-                            MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
-                            MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE,
-                            MG92B_RANGE, MG92B_RANGE, MG92B_RANGE, MG92B_RANGE
+#ifndef MG996R
+byte servoAngleRanges[] =  {HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
+                            HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE
                            };
 #else
 byte servoAngleRanges[] =  {HV5523_RANGE, HV5523_RANGE, HV5523_RANGE, HV5523_RANGE,
@@ -725,7 +717,6 @@ int8_t adaptiveParameterArray[16][NUM_ADAPT_PARAM] = {
   {lRF, lPF}, {lRF, lPF}, { -lRF, lPF}, { -lRF, lPF}
 };
 */
-
 int8_t adaptiveParameterArray[16][NUM_ADAPT_PARAM] = {
   { -panF, 0}, { -panF, -tiltF}, { -2 * panF, 0}, {0, 0},
   {sRF, -sPF}, { sRF, -sPF}, { sRF, sPF}, {sRF, sPF},
@@ -749,7 +740,7 @@ inline int8_t adaptiveCoefficient(byte idx, byte para) {
 
 /* Steffen modified balancing */
 float adjust(byte i) {
-  float rollAdj, pitchAdj, retval;
+  float rollAdj, pitchAdj, retval, faktor;
   if (i == 1 || i > 3)  {//check idx = 1
     bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
     //bool frontQ = i % 4 < 2 ? true : false;
@@ -759,33 +750,31 @@ float adjust(byte i) {
         || ( !leftQ && RollPitchDeviation[0]*slope  < 0))
       leftRightFactor = LEFT_RIGHT_FACTOR;
     rollAdj = fabs(RollPitchDeviation[0]) * adaptiveCoefficient(i, 0) * leftRightFactor;
-
-  }else{
-  	if (i>3){
-      rollAdj = postureOrWalkingFactor * RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
-  	}else{
-  		rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
-  	}
   }
-  
+  else
+    rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
+
+#ifdef POSTURE_WALKING_FACTOR
+  faktor = (i > 3 ? postureOrWalkingFactor : 1);
+#endif
   if (i == 4 || i == 5 || i == 6 || i == 7) {
-    retval = -rollAdj/2   - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+    
+    retval = faktor   * (-rollAdj)   - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+    //return 0;
   } else {
     if(isbalancing){
       //PTL("isbalancing");
-      retval = -rollAdj - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+      retval = faktor   * (-rollAdj)  - RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
     }else{
       //PTL("not isbalancing");
-      retval = rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
+      retval = faktor  * rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1);
     }
     //PTL(retval);
   }
   return (retval);
 }
-
-
-/**
-float adjust(byte i) {
+/* orig
+  float adjust(byte i) {
   float rollAdj, pitchAdj;
   if (i == 1 || i > 3)  {//check idx = 1
     bool leftQ = (i - 1 ) % 4 > 1 ? true : false;
@@ -802,13 +791,13 @@ float adjust(byte i) {
     rollAdj = RollPitchDeviation[0] * adaptiveCoefficient(i, 0) ;
 
   return (
-#ifdef POSTURE_WALKING_FACTOR
+  #ifdef POSTURE_WALKING_FACTOR
            (i > 3 ? postureOrWalkingFactor : 1) *
-#endif
-           // rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1])));
-           rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1) );
-}
-**/
+  #endif
+           //rollAdj + adaptiveCoefficient(i, 1) * ((i % 4 < 2) ? RollPitchDeviation[1] : abs(RollPitchDeviation[1])));
+          rollAdj + RollPitchDeviation[1] * adaptiveCoefficient(i, 1) );
+  }
+*/
 
 void saveCalib(int8_t *var) {
   for (byte i = 0; i < DOF; i++) {
@@ -816,6 +805,7 @@ void saveCalib(int8_t *var) {
     calibratedDuty0[i] = SERVOMIN + PWM_RANGE / 2 + float(middleShift(i) + var[i]) * pulsePerDegree[i] * rotationDirection(i);
   }
 }
+
 
 void calibratedPWM(byte i, float angle) {
   /*float angle = max(-SERVO_ANG_RANGE/2, min(SERVO_ANG_RANGE/2, angle));
