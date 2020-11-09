@@ -12,7 +12,7 @@ Arduino Pro Mini 16Mhz 5V
 
 12 x MG92b servos / JX PDI-HV5523
 
-The BIG Version uses JX PDI-HV5523 HV servos and spot micro (long) body https://www.thingiverse.com/thing:3445283
+The BIG Version (https://www.youtube.com/watch?v=1nhf8eKKQTI) uses JX PDI-HV5523 HV servos and spot micro (long) body https://www.thingiverse.com/thing:3445283
 
 HV5523 servo constants are 0°:544, 180°: 2400
 
@@ -55,7 +55,7 @@ In addition there are more possibilities to control Bela:
   
   -- In Progress:
   
-     Robot shall recognize different faces and react (great, bark, bite :) ).
+     Robot shall recognize different faces and react (greet, bark, bite :) ).
      
      Using OpenCV
      
