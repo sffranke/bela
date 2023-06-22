@@ -28,7 +28,7 @@ IR remote kit
 
 5 V Buzzer
 
-Optional: JVSISM YPG 20A HV SBEC to bring down the Voltage to 6 V.
+Optional: JVSISM YPG 20A HV SBEC to bring down the voltage to 6 V.
 
 BM3in1 3 In 1 Lipo Batterie Monitor
 
@@ -53,7 +53,7 @@ In addition there are more possibilities to control Bela:
   
   -- Using the HC-06 Bluetooth RF Transceiver Serial Module to control the robot via Smart Phone (voice and keyboard)
   
-  -- In Progress:
+  -- Maybe in future:
   
      Robot shall recognize different faces and react (greet, bark, bite :) ).
      
